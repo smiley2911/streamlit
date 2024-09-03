@@ -1,0 +1,11 @@
+Product,Severety,Probability,Score,Risk level
+A,5,0.9,4.5,High
+B,4,0.6,2.4,Medium
+C,2,0.7,1.4,Medium
+D,3,0.5,1.5,Medium
+E,1,0.8,0.8,Low
+F ,4,0.7,2.8,High
+G,3,0.1,0.3,Low
+H,5,0.5,2.5,High
+I,3,0.3,0.9,Low
+J,4,0.5,2,Medium

@@ -5,7 +5,7 @@ import streamlit as st
 
 # Sample dataset
 data = {
-    'pro': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+    'Product': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
     'Severity': [5, 4, 2, 3, 1, 4, 3, 5, 3, 4],
     'Probability': [0.9, 0.6, 0.7, 0.5, 0.8, 0.7, 0.1, 0.5, 0.3, 0.5],
     'Score': [4.5, 2.4, 1.4, 1.5, 0.8, 2.8, 0.3, 2.5, 0.9, 2],
@@ -14,15 +14,15 @@ data = {
 df = pd.DataFrame(data)
 
 # Streamlit app
-st.title('pro Risk Analysis')
+st.title('Product Risk Analysis')
 
 # Sidebar for user inputs
 st.sidebar.header('Options')
-selected_pro = st.sidebar.selectbox('Select a pro', options=df['pro'].unique())
+selected_product = st.sidebar.selectbox('Select a Product', options=df['Product'].unique())
 
 # Action buttons
 generate_visualizations = st.sidebar.button('Generate All Visualizations')
-show_analysis = st.sidebar.button('Show Individual Pr Analysis')
+show_analysis = st.sidebar.button('Show Individual Product Analysis')
 
 if generate_visualizations:
     st.subheader('All Visualizations')
@@ -45,7 +45,7 @@ if generate_visualizations:
         fig_all.add_annotation(
             x=row['Severity'],
             y=row['Probability'],
-            text=f"pro: {row['pro']}<br>Score: {row['Score']}",
+            text=f"Product: {row['Product']}<br>Score: {row['Score']}",
             showarrow=True,
             arrowhead=2
         )
@@ -58,8 +58,8 @@ if generate_visualizations:
     st.plotly_chart(fig_all)
 
     # Scatter plot
-    fig1 = px.scatter(df, x='Severity', y='Probability', size='Score', color='pro',
-                      title='Severity vs Probability with pro Score',
+    fig1 = px.scatter(df, x='Severity', y='Probability', size='Score', color='Product',
+                      title='Severity vs Probability with Product Score',
                       labels={'Severity': 'Severity Level', 'Probability': 'Probability of Issue'})
     fig1.update_layout(xaxis=dict(range=[0, 6]), yaxis=dict(range=[0, 1]))
     st.plotly_chart(fig1)
@@ -67,32 +67,32 @@ if generate_visualizations:
     # Stacked bar chart for risk level distribution
     fig_stacked_bar_risk = px.bar(
         df,
-        x='pro',
+        x='Product',
         y='Score',
         color='Risk level',
-        title='Stacked Bar Chart of Risk Level Distribution for All pros',
-        labels={'x': 'pro', 'y': 'Score'},
+        title='Stacked Bar Chart of Risk Level Distribution for All Products',
+        labels={'x': 'Product', 'y': 'Score'},
         barmode='stack'
     )
     st.plotly_chart(fig_stacked_bar_risk)
 
-if show_analysis and selected_pro:
-    st.subheader(f'pro {selected_pro} Details')
+if show_analysis and selected_product:
+    st.subheader(f'Product {selected_product} Details')
 
-    # Generate graph for selected pro
-    pro_data = df[df['pro'] == selected_pro]
+    # Generate graph for selected product
+    product_data = df[df['Product'] == selected_product]
 
     # Ensure the data is in the correct format for the bar chart
     features = ['Severity', 'Probability', 'Score']
-    values = pro_data[features].values.flatten()
+    values = product_data[features].values.flatten()
     feature_labels = [f'{feature}: {value}' for feature, value in zip(features, values)]
 
-    fig_pro = px.bar(
+    fig_product = px.bar(
         x=features,
         y=values,
-        title=f'pro {selected_pro} Details',
+        title=f'Product {selected_product} Details',
         labels={'x': 'Feature', 'y': 'Value'},
         text=values
     )
-    fig_pro.update_traces(texttemplate='%{text:.2f}', textposition='outside')
-    st.plotly_chart(fig_pro)
+    fig_product.update_traces(texttemplate='%{text:.2f}', textposition='outside')
+    st.plotly_chart(fig_product)
